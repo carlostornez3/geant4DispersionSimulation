@@ -1,0 +1,4 @@
+/home/carlitosduty/Documents/codes/Geant4/geant4DispersionSimulation/build2/CMakeFiles/rebuild_cache.dir
+/home/carlitosduty/Documents/codes/Geant4/geant4DispersionSimulation/build2/CMakeFiles/DispersionSim.dir
+/home/carlitosduty/Documents/codes/Geant4/geant4DispersionSimulation/build2/CMakeFiles/edit_cache.dir
+/home/carlitosduty/Documents/codes/Geant4/geant4DispersionSimulation/build2/CMakeFiles/sim.dir

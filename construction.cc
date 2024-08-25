@@ -93,48 +93,30 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct(){
 
 
     G4double scLenght = 1.*m, scWidth = 5*cm, scThickness = 5.*cm;
-    G4double ironLength=1*m, ironWidth = 1*m, ironThickness = 1*m;
-    G4double  ironPosition = 0*cm;
+    G4double ironLength=60*cm, ironWidth = 60*cm, ironThickness = 60*cm;
+    G4double  ironPosition = ironThickness/2+10*cm;
     G4double scPosition = ironPosition+ironThickness*0.5+ 500*cm;
     G4double sensorLength = 6*mm;
 
 
-    G4Box *solidIron = new G4Box("solidIron", ironLength, ironWidth, ironThickness);
-    G4LogicalVolume *logicIron = new G4LogicalVolume(solidIron, ironMat, "logicIron");
+    G4Box *solidIron = new G4Box("solidIron", ironLength/2, ironWidth/2, ironThickness/2);
+    G4LogicalVolume *logicIron = new G4LogicalVolume(solidIron, worldMat, "logicIron");
     G4VPhysicalVolume *physIron = new G4PVPlacement(0,G4ThreeVector(0.,0.,ironPosition), logicIron, "physIron", logicWorld,false, 1, true);
-
     
+    copyNumberSC=1;
 
-    //rectangularPhysicalVolume(EJ2length, EJ2width, EJ2thickness,detectorLength, 0.*cm, 0.*cm, 488.45*cm,mylarMat,EJMat,physSC, logicDetector, logicDetectorEJ5,"EJ5");
     
     
     G4Box *solidScintillator = new G4Box("solidScintillator",scWidth/2,scLenght/2,scThickness/2);
     logicSC= new G4LogicalVolume(solidScintillator,SCMat, "logicSC");
-   // physSC = new G4PVPlacement(0,G4ThreeVector(0.,0.,scPosition), logicSC, "physSC", logicWorld,false, 2, true);
+    
 
-        G4ThreeVector yTrans1(0,scLenght/2,0);
-        G4ThreeVector yTrans2(0,-1*scLenght/2,0);
-        yRot->rotateY(0*rad);
-        innerBox = new G4Box("innerBox",scWidth/2,scLenght/2,scThickness/2);
-        externalBox = new G4Box("externalBox",(scWidth/2)+1*mm,(scLenght/2)+1*mm,(scThickness/2)+1*mm);
-        sensorBox = new G4Box("sensorBox",sensorLength/2,1.*mm,sensorLength/2);
-
-        externalInner= new G4SubtractionSolid("External-Inner", externalBox, innerBox);
-        externalSensor1=new G4SubtractionSolid("External-Inner-Sensor1", externalInner, sensorBox, yRot, yTrans1);
-        externalSensor2=new G4SubtractionSolid("External-Inner-Sensor2", externalSensor1, sensorBox, yRot, yTrans2);
-        logicMylar= new G4LogicalVolume(externalSensor2,mylarMat, "logicMylar");
-        physMylar =new G4PVPlacement(0,G4ThreeVector(0.,0.,scPosition),logicMylar,"physMylar",logicWorld,false,2,true);
-
-        
+    sensorBox = new G4Box("solidScintillator",sensorLength/2,1*mm,sensorLength/2);
+    logicDetector = new G4LogicalVolume(sensorBox, worldMat, "logicDetector");
+    rectangularPhysicalVolume(scLenght, scWidth, scThickness,sensorLength, 0.*cm, 0.*cm, scPosition,mylarMat,SCMat,physSC, logicDetector, logicSC,"scintillator");
 
     
-        physSC =new G4PVPlacement(0,G4ThreeVector(0.,0.,scPosition),logicSC,"physSC",logicWorld,false,3,true);
-        
-        
-        G4LogicalVolume *logicSensor = new G4LogicalVolume(sensorBox, worldMat, "logicSensor");
-        upperDetector=new G4PVPlacement(0,G4ThreeVector(0.,(scLenght/2)+1*mm,scPosition),logicSensor,"physDetector1",logicWorld,false,4,true);
-        lowerDetector =new G4PVPlacement(0,G4ThreeVector(0.,(-1*scLenght/2)-1*mm,scPosition),logicSensor,"physDetector2",logicWorld,false,5,true);
-    //fScoringVolume=logicSC;
+   
 
     return physWorld;
 } 
@@ -144,14 +126,14 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct(){
 //Predefined method used to tell Geant4 what objects are detectors. 
 void MyDetectorConstruction::ConstructSDandField(){
    
-  //  MyBarDetector *mybardetector = new MyBarDetector("mybardetector");
+    MyBarDetector *mybardetector = new MyBarDetector("mybardetector");
    // MyPhotoDetector *myphotodetector = new MyPhotoDetector("myphotodetector");
    
    
    //logicDetector->SetSensitiveDetector(myphotodetector);
    //logicPhotoSensorUpHex->SetSensitiveDetector(myphotodetector);
     
-    //logicSC->SetSensitiveDetector(mybardetector);  
+    logicSC->SetSensitiveDetector(mybardetector);  
 }
 
 void MyDetectorConstruction::rectangularPhysicalVolume(G4double length, G4double width, G4double thickness,G4double sensorLength, G4double Xcoordinate, G4double Ycoordinate, G4double Zcoordinate,G4Material* MylarM ,G4Material *material, G4VPhysicalVolume *physicalVolume, G4LogicalVolume *logicalDetector, G4LogicalVolume *logicSC, G4String nombre){

@@ -43,8 +43,8 @@ G4bool MyBarDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist){
     man->FillNtupleDColumn(0,5,pos.y()/mm);
     man->FillNtupleDColumn(0,6,pos.z()/mm);  
     man->FillNtupleDColumn(0,7,Energy/MeV); 
-    man->FillNtupleSColumn(0,6,particleName); 
-    man->FillNtupleDColumn(0,5,time/ns);    
+    man->FillNtupleSColumn(0,8,particleName); 
+    man->FillNtupleDColumn(0,9,time/ns);    
     man->AddNtupleRow(0); 
         
 

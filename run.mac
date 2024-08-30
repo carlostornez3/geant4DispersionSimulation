@@ -1,0 +1,19 @@
+
+/run/numberOfThreads 5
+/distance/ironBeamDistance 10 
+/distance/ironPlasticDistance 30
+/distance/ironthickness 70 
+/file/fileName prueba
+/run/initialize
+/control/execute gps.mac
+/gps/ene/mono 1000 MeV
+
+
+/control/verbose 2
+
+/run/verbose 2
+
+
+
+
+/control/loop rungps.mac count 1 1000 1

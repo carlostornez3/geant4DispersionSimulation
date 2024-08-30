@@ -6,6 +6,13 @@ G4int MyDetectorConstruction::copyNumberSC;
 MyDetectorConstruction::MyDetectorConstruction(){
    
 DefineMaterialsBC();
+ironBeamDistance=10;
+ironPlasticDistance=100;
+ironThickness=60;
+fMessenger = new G4GenericMessenger(this, "/distance/", "Distance");
+fMessenger->DeclareProperty("ironBeamDistance", ironBeamDistance, "Set the distance between the Beam and the closest face of the iron");
+fMessenger->DeclareProperty("ironPlasticDistance", ironPlasticDistance, "Set the distance between the closest face of the plastic and the closest face of the iron");
+fMessenger->DeclareProperty("ironthickness", ironThickness, "Set the thickness of the iron, i.e., in the z direction");
 
 }
 MyDetectorConstruction::~MyDetectorConstruction(){}
@@ -91,11 +98,13 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct(){
 
 
 
-
+    ironBeamDistance=ironBeamDistance*cm;
+    ironThickness=ironThickness*cm;
+    ironPlasticDistance=ironPlasticDistance*cm;
     G4double scLenght = 1.*m, scWidth = 5*cm, scThickness = 5.*cm;
-    G4double ironLength=60*cm, ironWidth = 60*cm, ironThickness = 60*cm;
-    G4double  ironPosition = ironThickness/2+10*cm;
-    G4double scPosition = ironPosition+ironThickness*0.5+ 500*cm;
+    G4double ironLength=60*cm, ironWidth = 60*cm;
+    G4double  ironPosition = ironThickness/2 + ironBeamDistance;
+    G4double scPosition = ironPosition+ironThickness*0.5+ ironPlasticDistance + scThickness;
     G4double sensorLength = 6*mm;
 
 
@@ -114,8 +123,10 @@ G4VPhysicalVolume *MyDetectorConstruction::Construct(){
     sensorBox = new G4Box("solidScintillator",sensorLength/2,1*mm,sensorLength/2);
     logicDetector = new G4LogicalVolume(sensorBox, worldMat, "logicDetector");
     rectangularPhysicalVolume(scLenght, scWidth, scThickness,sensorLength, 0.*cm, 0.*cm, scPosition,mylarMat,SCMat,physSC, logicDetector, logicSC,"scintillator");
-
-    
+    G4cout<<"ironBeamDistance:"<<ironBeamDistance/cm<<" ironPlasticDistance: "<<ironPlasticDistance/cm<<" ironThickness: "<<ironThickness/cm<<G4endl;
+    G4cout<<"Scintillator positioned at: "<<scPosition/cm<<" cm"<<G4endl;
+    G4cout<<"Iron positioned at: "<<ironPosition/cm<<"cm"<<G4endl;
+    G4cout<<"Closest face of the scintillator at:"<<(scPosition-scThickness/2)/cm<<" cm"<<G4endl;
    
 
     return physWorld;

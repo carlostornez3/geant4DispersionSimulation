@@ -16,7 +16,7 @@
 #include "G4Polyhedra.hh"
 #include "G4TessellatedSolid.hh"
 #include "G4OpticalPhysics.hh"
-
+#include "G4GenericMessenger.hh"
 #include "G4SubtractionSolid.hh"
 #include "G4OpticalSurface.hh"
 #include "G4LogicalSkinSurface.hh"
@@ -42,10 +42,9 @@ public:
 
 private: 
     G4LogicalVolume *logicDetector;
-   
+    G4GenericMessenger *fMessenger;
     G4LogicalVolume *fScoringVolume;
    
-    G4int nCols,nRows;
     G4VPhysicalVolume *physWorld,*physSC,*physDetectorX1,*physDetectorX2,*physDetector,*physMylar,*physDetectorY1,*physDetectorY2,*physDetector1,*physDetector2, *upperDetector, *lowerDetector;
     virtual void ConstructSDandField();
     
@@ -67,6 +66,7 @@ private:
     G4Material* Freon;
     G4Material *copper;
     void DefineMaterialsBC();
+    G4double ironBeamDistance, ironPlasticDistance, ironThickness;
     
 };
 #endif

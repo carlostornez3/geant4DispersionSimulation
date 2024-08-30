@@ -6,10 +6,11 @@
 /vis/viewer/set/viewpointVector 1 1 1
 /vis/scene/add/trajectories smooth
 /vis/scene/add/scale 5 cm
-/vis/scene/add/axes
+#/vis/scene/add/axes
 /vis/scene/add/eventID
 /vis/viewer/set/autoRefresh true
 #/vis/verbose warnings
-#/tracking/storeTrajectory 0
-/process/optical/scintillation/setFiniteRiseTime true
-
+/vis/filtering/trajectories/create/particleFilter
+/vis/filtering/trajectories/particleFilter-0/add pi+
+/vis/scene/endOfEventAction accumulate
+/control/execute gps.mac

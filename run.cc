@@ -23,8 +23,9 @@ MyRunAction::MyRunAction(){
         man->CreateNtupleSColumn("SParticleName"); 
         man->CreateNtupleDColumn("fLocalTime");
         man->FinishNtuple(0);
-
-    
+    fileName = "output";
+    fMessenger = new G4GenericMessenger(this, "/file/", "Outputfile");
+    fMessenger->DeclareProperty("fileName", fileName, "Set the name of the output root file");
 
         
 
@@ -43,8 +44,8 @@ void MyRunAction::BeginOfRunAction(const G4Run * run){
     G4int runID = run->GetRunID();
     std::stringstream strRunID;
     strRunID<<runID;
-    G4String file;
-    file = "output1.root";
+
+    file = strRunID.str() +"_"+ fileName +".root";
     man->OpenFile(file);
 
 

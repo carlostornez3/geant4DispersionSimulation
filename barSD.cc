@@ -47,7 +47,7 @@ G4bool MyBarDetector::ProcessHits(G4Step *aStep, G4TouchableHistory *ROhist){
     man->FillNtupleDColumn(0,9,time/ns);    
     man->AddNtupleRow(0); 
         
-
+ 
     
 
 
